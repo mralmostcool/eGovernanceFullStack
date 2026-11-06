@@ -1,6 +1,6 @@
 services:
   minio:
-    image: minio/minio:latest
+    image: pgsty/silo:latest
     container_name: s3-filestore
     ports:
       - "9000:9000"
