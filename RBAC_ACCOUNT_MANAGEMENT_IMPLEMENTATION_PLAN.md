@@ -271,10 +271,58 @@ JOIN auth.permissions p ON p.name IN (
 - `blacklist:{jti}` -> `"1"`, TTL remaining access token duration.
 - `rate:login:{ip}` -> Counter, TTL 15 minutes (max 10 requests).
 - `rate:register:{ip}` -> Counter, TTL 1 hour (max 5 requests).
+- `password-reset:{token}` -> `{ userId }`, TTL 15 minutes.
 
 ---
 
-## 5. Spring Modulith Architecture & Package Structure
+## 5. Security & Configuration Specification
+
+### JWT & Cryptographic Settings
+Configured via `application.yaml` / environment variables:
+```yaml
+security:
+  jwt:
+    secret-key: ${JWT_SECRET_KEY:default-very-long-and-secure-secret-key-min-256-bits-for-hs256}
+    access-token-expiration-ms: ${JWT_ACCESS_EXP_MS:900000}       # 15 min
+    refresh-token-expiration-ms: ${JWT_REFRESH_EXP_MS:604800000}  # 7 days
+    issuer: egov-security-core
+  lockout:
+    max-failed-attempts: 5
+    lockout-duration-minutes: 30
+```
+
+### Password Policies (Validated via Bean Validation)
+- Minimum 8 characters, maximum 128 characters.
+- Must include at least 1 uppercase letter, 1 lowercase letter, 1 digit, and 1 special symbol (`@$!%*?&#^_-`).
+- Validated via custom annotation `@ValidPassword` or Regex constraint in DTOs.
+
+### Frontend Security Interaction Rules
+- **Access Token:** Never stored in `localStorage` or `sessionStorage` (mitigating XSS). Stored only in React memory/context state.
+- **Refresh Token:** Stored in an `httpOnly`, `SameSite=Strict`, `Secure` (in production) cookie named `refresh_token`.
+- **Axios / Fetch Interceptor:** On receiving HTTP `401 Unauthorized`, interceptor halts outgoing requests, dispatches a single call to `POST /api/v1/auth/refresh`, updates access token in memory, and replays failed requests. If refresh returns `401` or `403`, purge in-memory state and route to `/login`.
+- **Next.js Middleware:** Checks route permissions and validates presence of session cookie before serving protected dashboard routes.
+
+---
+
+## 6. Testing & Quality Assurance Strategy
+
+To ensure zero regressions and strict security compliance across all releases:
+
+1. **Architecture & Boundary Tests:**
+   - `ApplicationModulesTests`: Runs `ApplicationModules.of(EgovApplication.class).verify()` to guarantee modular encapsulation.
+2. **Integration Tests (Testcontainers):**
+   - Use existing `testcontainers-postgresql` with active Redis test container to test actual Flyway migration runs and repository operations.
+3. **Security & Controller Tests (`@WebMvcTest` / `@SpringBootTest`):**
+   - Verify unauthenticated calls return `401 Unauthorized`.
+   - Verify unauthorized roles attempting admin routes return `403 Forbidden`.
+   - Test login lockout after 5 consecutive failed attempts.
+   - Test refresh token reuse detection and invalidation.
+4. **CI Pipeline Integration:**
+   - Existing GitHub Action (`ci.yml`) must build backend and pass all test suites before merge to `main`.
+
+---
+
+## 7. Spring Modulith Architecture & Package Structure
 
 ```
 egov/
@@ -360,7 +408,7 @@ egov/
 
 ---
 
-## 6. Git Rules & Release Workflow
+## 8. Git Rules & Release Workflow
 
 1. **Active Branch:** Always work on `dev`.
 2. **Commit Standard:** Conventional Commits (`type(scope): description`).
@@ -378,7 +426,7 @@ egov/
 
 ---
 
-## 7. Phased Implementation Roadmap
+## 9. Phased Implementation Roadmap
 
 | Phase | Description | Release Target | Current Status |
 |---|---|---|---|
@@ -391,3 +439,4 @@ egov/
 | **Phase 6** | `audit` module: event listeners persisting to `audit.login_activity` and `audit.auth_events` | **v0.5.0** (merge to `main`, tag, release) | Pending |
 | **Phase 7** | `account` module: profile self-service + admin user management | **v0.6.0** (merge to `main`, tag, release) | Pending |
 | **Phase 8** | `rbac` module: dynamic role & permission assignment endpoints | **v0.7.0** (merge to `main`, tag, release) | Pending |
+
