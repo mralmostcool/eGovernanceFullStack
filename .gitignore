@@ -1,0 +1,7 @@
+# Environment secrets
+.env
+
+# Docker persistent volumes
+filestore/
+database/
+
