@@ -72,12 +72,12 @@ public class ApiEndpointLogger {
                                                 .thenComparing(EndpointRow::handler));
 
                 log.info("");
-                log.info("╔══════════════════════════════════════════════════════════════════════╗");
-                log.info("║                    REGISTERED API ENDPOINTS                          ║");
-                log.info("╠══════════════════════════════════════════════════════════════════════╣");
+                log.info("╔════════════════════════════════════════════════════════════════════════════════════════════════════════════╗");
+                log.info("║                                        REGISTERED API ENDPOINTS                                            ║");
+                log.info("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════╣");
                 log.info("║ Total registered mappings : {}",
-                                String.format("%-41d║", endpoints.size()));
-                log.info("╚══════════════════════════════════════════════════════════════════════╝");
+                                String.format("%-108d║", endpoints.size()));
+                log.info("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝");
 
                 if (endpoints.isEmpty()) {
                         log.info("No request mappings were found.");
