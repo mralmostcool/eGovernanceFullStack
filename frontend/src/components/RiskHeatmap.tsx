@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { Download, ChevronDown } from "lucide-react";
 
 export function RiskHeatmap() {
-  const [selectedYear, setSelectedYear] = useState("2025");
   const [hoveredCell, setHoveredCell] = useState<{
     col: number;
     row: number;
@@ -21,7 +20,6 @@ export function RiskHeatmap() {
     date: "May 13, Mon",
   });
 
-  const days = ["Mon", "Thu", "Sun"];
   const totalWeeks = 48; // across the 12 months
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -69,7 +67,7 @@ export function RiskHeatmap() {
 
         <div className="flex items-center gap-2">
           <button className="flex items-center gap-1.5 px-2.5 py-1 text-xs border border-gray-200/90 rounded-lg text-gray-600 hover:bg-[#f2e8cf]/30 transition font-medium">
-            <span>{selectedYear}</span>
+            <span>2025</span>
             <ChevronDown className="w-3 h-3 text-gray-500" />
           </button>
           <button className="flex items-center gap-1 px-2.5 py-1 text-xs border border-gray-200/90 rounded-lg text-[#386641] hover:bg-[#f2e8cf]/30 font-medium transition">

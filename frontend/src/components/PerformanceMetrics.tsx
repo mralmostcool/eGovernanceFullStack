@@ -1,11 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Filter, Download } from "lucide-react";
 
 export function PerformanceMetrics() {
-  const [activeRange, setActiveRange] = useState("09/01");
-
   // Time ticks along x axis
   const timeLabels = [
     "09/01\n10:00 PM",

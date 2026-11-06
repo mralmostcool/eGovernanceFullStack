@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Search, Filter, ChevronDown, Download, ExternalLink } from "lucide-react";
+import { Search, Filter, ChevronDown, Download } from "lucide-react";
 
 interface AgentRow {
   name: string;

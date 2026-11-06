@@ -17,6 +17,7 @@ import {
   Settings,
   Search,
   ChevronDown,
+  type LucideIcon,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -48,7 +49,7 @@ export function Sidebar({ currentTab = "Dashboard", onSelectTab }: SidebarProps)
     { name: "Subscription", icon: CreditCard },
   ];
 
-  const renderNavGroup = (title: string, items: { name: string; icon: any }[]) => (
+  const renderNavGroup = (title: string, items: { name: string; icon: LucideIcon }[]) => (
     <div className="mb-6">
       <div className="text-[11px] font-semibold text-[#6a994e] uppercase tracking-wider px-3 mb-2">
         {title}
