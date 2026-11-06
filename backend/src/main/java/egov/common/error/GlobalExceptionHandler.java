@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import demo.examportal.shared.exception.ExampleException;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice
@@ -28,11 +27,6 @@ public class GlobalExceptionHandler {
                 req.getRequestURI(),
                 MDC.get("correlationId"));
         return ResponseEntity.status(status).body(body);
-    }
-
-    @ExceptionHandler(ExampleException.class)
-    public ResponseEntity<ErrorResponse> handleExample(ExampleException ex, HttpServletRequest req) {
-        return build(ex.getStatus(), ex.getCode(), ex.getMessage(), req);
     }
 
     @ExceptionHandler(org.springframework.web.bind.MethodArgumentNotValidException.class)
