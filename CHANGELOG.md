@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-11-06
+
+### Added
+- **Backend Common Infrastructure**:
+  - `SecurityConfig` with stateless session policy, CORS configuration, and public endpoint permissions.
+  - `GlobalExceptionHandler` with standardized JSON error payload mapping, validation error reduction, and correlation ID tracking.
+  - `CorrelationIdFilter` for HTTP request tracing via `X-Correlation-Id` header and MDC injection.
+  - `ApiEndpointLogger` event listener for logging registered endpoint mappings upon application readiness.
+
+## [0.2.0] - 2026-11-06
+
+### Added
+- **Backend Infrastructure & Configuration**:
+  - Multi-stage Dockerfile for Spring Boot backend service.
+  - Docker Compose backend orchestration with health check and environment wiring.
+  - Spring Boot application configuration (`application.yml`) for PostgreSQL, Redis, and MinIO S3 integration.
+
 ## [0.1.0] - 2026-11-06
 
 ### Added
