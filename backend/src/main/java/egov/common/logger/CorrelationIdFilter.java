@@ -1,4 +1,4 @@
-package demo.examportal.shared.logger;
+package egov.common.logger;
 
 import java.io.IOException;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package demo.examportal.shared.error;
+package egov.common.error;
 
 import java.time.Instant;
 
