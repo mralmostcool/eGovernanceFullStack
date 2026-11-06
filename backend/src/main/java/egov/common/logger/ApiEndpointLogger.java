@@ -76,7 +76,7 @@ public class ApiEndpointLogger {
                 log.info("║                                        REGISTERED API ENDPOINTS                                            ║");
                 log.info("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════╣");
                 log.info("║ Total registered mappings : {}",
-                                String.format("%-108d║", endpoints.size()));
+                                String.format("%-79d║", endpoints.size()));
                 log.info("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝");
 
                 if (endpoints.isEmpty()) {
