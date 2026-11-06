@@ -1,0 +1,45 @@
+# .github/workflows/ci.yml
+name: CI
+on:
+    push:
+        branches: [dev]
+    pull_request:
+        branches: [main, dev]
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test --if-present
+      - run: npm run build
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:8000
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create dummy env file
+        run: |
+          cat > .env <<EOF
+          MINIO_ROOT_USER=ci
+          MINIO_ROOT_PASSWORD=ci-password-123
+          POSTGRES_USER=ci
+          POSTGRES_PASSWORD=ci
+          POSTGRES_DB=ci
+          REDIS_PASSWORD=ci
+          NEXT_PUBLIC_API_URL=http://localhost:8000
+          EOF
+      - run: docker compose config -q   # validates the compose file
+      - run: docker compose build       # confirms images build
