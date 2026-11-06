@@ -1,0 +1,12 @@
+target/
+.mvn/wrapper/maven-wrapper.jar
+.git
+.gitignore
+.gitattributes
+*.log
+.idea/
+.vscode/
+*.iml
+HELP.md
+egov.zip
+
